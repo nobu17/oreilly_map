@@ -1,0 +1,134 @@
+﻿@inject IJSRuntime js
+
+@page "/"
+
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-5">
+    <MudText Align="Align.Center" Typo="Typo.h5">オライリー特約店を探そう！</MudText>
+    <AnimalImage></AnimalImage>
+    <SearchBox ButtonDisabled="@IsLoading" OnPrefectureSearchClicked="OnSearchPrefecture" OnNearestStoreSearchClicked="OnSearchNearest"></SearchBox>
+    <MudText Color="Color.Error">@ErrorMessage</MudText>
+    <MudText>@Message</MudText>
+    @if (IsLoading)
+    {
+        <MudGrid Justify="Justify.Center">
+            <MudItem>
+                <MudProgressCircular Color="Color.Warning" Style="height:70px;width:70px;" Indeterminate="true" />
+            </MudItem>
+        </MudGrid>
+    }
+    else if (Stores != null)
+    {
+        <StoreList Stores="@Stores" CurrentPosition="@CurrentPosition"></StoreList>
+    }
+</MudContainer>
+
+
+@code{
+
+    public string Message
+    {
+        get
+        {
+            if (Stores == null)
+            {
+                return string.Empty;
+            }
+            return "該当件数:" + Stores.Count.ToString(); ;
+        }
+    }
+
+    public string ErrorMessage { get; set; }
+
+    public bool IsLoading { get; set; } = false;
+
+    [Inject]
+    public StoreApplicationService AppService { get; set; }
+
+    public List<Store> Stores { get; set; }
+
+    public Position CurrentPosition { get; set; }
+
+    public async void OnSearchPrefecture(Prefecture prefecture)
+    {
+        try
+        {
+            ResetInfo();
+            IsLoading = true;
+            StateHasChanged();
+            var stores = await AppService.GetAsync(prefecture);
+            Stores = stores.ToList();
+        }
+        catch (Exception e)
+        {
+            ErrorMessage = "データの取得に失敗しました" + e.ToString();
+        }
+        finally
+        {
+            IsLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    public async void OnSearchNearest()
+    {
+        try
+        {
+            ResetInfo();
+            IsLoading = true;
+            var location = await GetPositionAsync();
+            if (location == null)
+            {
+                ErrorMessage = "位置情報が取得できませんでした。";
+                return;
+            }
+            CurrentPosition = location;
+            var stores = await AppService.GetNearestAsync((double)location.Latitude, (double)location.Longitude, 15);
+            Stores = stores.ToList();
+        }
+        catch (Exception e)
+        {
+            ErrorMessage = "位置情報が取得できませんでした。" + e.ToString();
+        }
+        finally
+        {
+            IsLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private void ResetInfo()
+    {
+        CurrentPosition = null;
+        Stores = new List<Store>();
+        ErrorMessage = string.Empty;
+    }
+
+    private async Task<Position> GetPositionAsync()
+    {
+        var geoModule = await js.InvokeAsync<IJSObjectReference>("import", "./js/geo.js");
+        try
+        {
+            var pos = await geoModule.InvokeAsync<JsPosition>("getCurrentLocation");
+            return pos.ToPosition();
+        }
+        catch (Exception e)
+        {
+            ErrorMessage = e.ToString();
+            return null;
+        }
+    }
+
+    public class JsPosition
+    {
+        public double Latitude { get; set; }
+
+        public double Longitude { get; set; }
+
+        public Position ToPosition()
+        {
+            return new Position(Latitude, Longitude);
+        }
+    }
+
+}

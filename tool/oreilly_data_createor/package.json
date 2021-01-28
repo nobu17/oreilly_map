@@ -1,0 +1,24 @@
+{
+  "name": "oreilly_data_createor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^7.17.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-prettier": "^3.3.0",
+    "prettier": "^2.2.1"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "jsdom": "^16.4.0",
+    "open-location-code": "^1.0.3",
+    "puppeteer": "^5.5.0"
+  }
+}

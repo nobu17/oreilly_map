@@ -1,0 +1,43 @@
+﻿<MudGrid>
+    @if (!string.IsNullOrWhiteSpace(imageUrl))
+    {
+        <MudItem xs="12">
+            <MudGrid Justify="Justify.Center">
+                <MudItem>
+                    <img src="@imageUrl" />
+                </MudItem>
+            </MudGrid>
+        </MudItem>
+    }
+    else
+    {
+        <MudItem xs="12">
+            <MudProgressCircular Color="Color.Warning" Style="height:70px;width:70px;" Indeterminate="true" />
+        </MudItem>
+    }
+</MudGrid>
+@code {
+
+    private readonly List<string> imageList = new List<string>()
+{
+        "./img/rahino.png",
+        "./img/rakuda.png",
+        "./img/saru.png",
+        "./img/ckame.png",
+    };
+
+    private string imageUrl = string.Empty;
+
+    protected override void OnParametersSet()
+    {
+        InitAnimal();
+        base.OnParametersSet();
+    }
+
+    private void InitAnimal()
+    {
+        var rnd = new Random();
+        var value = rnd.Next(0, imageList.Count);
+        imageUrl = imageList[value];
+    }
+}

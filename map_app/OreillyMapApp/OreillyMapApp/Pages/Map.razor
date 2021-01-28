@@ -1,0 +1,122 @@
+﻿@inject IJSRuntime js
+@inject NavigationManager NavigationManager
+
+@page "/map"
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="my-2">
+    <MudGrid Justify="Justify.Center">
+        <MudItem>
+            <MudGrid Justify="Justify.Center" Class="my-1">
+                <MudItem>
+                    <MudButton Link="/"
+                               Variant="Variant.Filled"
+                               StartIcon="@Icons.Material.Wysiwyg"
+                               Color="Color.Primary" Size="Size.Large"
+                               Style="width:23em;">条件で探す</MudButton>
+                </MudItem>
+            </MudGrid>
+            @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+            {
+                <MudText Color="Color.Error">@ErrorMessage</MudText>
+            }
+        </MudItem>
+    </MudGrid>
+
+    @if (IsLoading)
+    {
+        <MudGrid Justify="Justify.Center">
+            <MudItem>
+                <MudProgressCircular Color="Color.Warning" Style="height:170px;width:170px;" Indeterminate="true" />
+            </MudItem>
+        </MudGrid>
+    }
+    else
+    {
+        <StoreMap @ref="map"></StoreMap>
+    }
+</MudContainer>
+
+@code {
+
+    private StoreMap map;
+    private bool isInitilized = false;
+
+    [Inject]
+    public StoreApplicationService AppService { get; set; }
+
+    public List<Store> Stores { get; set; } = new List<Store>();
+
+    public Position Position { get; set; }
+
+    public string ErrorMessage { get; set; }
+
+    public bool IsLoading { get; set; } = false;
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        NavigationManager.LocationChanged += LocationChanged;
+
+        try
+        {
+            ErrorMessage = string.Empty;
+            IsLoading = true;
+            StateHasChanged();
+            await SetLocationAsync();
+            var stores = await AppService.GetAllAsync();
+            Stores = stores.ToList();
+        }
+        catch (Exception e)
+        {
+            ErrorMessage = "データの取得に失敗しました" + e.ToString();
+        }
+        finally
+        {
+            IsLoading = false;
+            StateHasChanged();
+        }
+        await base.OnInitializedAsync();
+    }
+
+    void LocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        isInitilized = false;
+        string navigationMethod = e.IsNavigationIntercepted ? "HTML" : "code";
+        System.Diagnostics.Debug.WriteLine($"Notified of navigation via {navigationMethod} to {e.Location}");
+    }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (map != null && !isInitilized)
+        {
+            isInitilized = true;
+            await map.InitAsync(Stores, Position);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task SetLocationAsync()
+    {
+        try
+        {
+            var geoModule = await js.InvokeAsync<IJSObjectReference>("import", "./js/geo.js");
+            var pos = await geoModule.InvokeAsync<JsPosition>("getCurrentLocation");
+            Position = pos.ToPosition();
+        }
+        catch (Exception)
+        {
+        }
+    }
+
+    public class JsPosition
+    {
+        public double Latitude { get; set; }
+
+        public double Longitude { get; set; }
+
+        public Position ToPosition()
+        {
+            return new Position(Latitude, Longitude);
+        }
+    }
+}

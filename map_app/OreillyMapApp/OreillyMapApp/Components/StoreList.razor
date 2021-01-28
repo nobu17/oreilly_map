@@ -1,0 +1,49 @@
+﻿@if (Stores != null)
+{
+    <MudGrid>
+        @foreach (var store in Stores)
+        {
+            <MudItem xs="12" md="6">
+                <MudCard Outlined="true">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h6">@store.StoreName</MudText>
+                        </CardHeaderContent>
+                        <CardHeaderActions>
+                            @if (!string.IsNullOrWhiteSpace(store.StoreUrl))
+                            {
+                                <MudIconButton Icon="@Icons.Material.Home" Color="Color.Primary" Size="Size.Large" Link="@store.StoreUrl" Target="_blank" />
+                            }
+                            @if (!string.IsNullOrWhiteSpace(store.MapUrl))
+                            {
+                                <MudIconButton Icon="@Icons.Material.AddLocation" Color="Color.Primary" Size="Size.Large" Link="@store.MapUrl" Target="_blank" />
+                            }
+                        </CardHeaderActions>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        @if (CurrentPosition != null)
+                        {
+                            <p>@GetDistanceString(store, CurrentPosition)</p>
+                        }
+                        <MudText Typo="Typo.body1">@store.PostalCode @store.Address</MudText>
+                        <MudText Typo="Typo.body2">@store.TelCode</MudText>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        }
+    </MudGrid>
+}
+
+@code {
+    [Parameter]
+    public List<Store> Stores { get; set; } = new List<Store>();
+
+    [Parameter]
+    public Position CurrentPosition { get; set; }
+
+    private static string GetDistanceString(Store store, Position position)
+    {
+        var meter = store.GetDistance(position.Latitude, position.Longitude) / 1000;
+        return Math.Round(meter, 3).ToString() + " km";
+    }
+}

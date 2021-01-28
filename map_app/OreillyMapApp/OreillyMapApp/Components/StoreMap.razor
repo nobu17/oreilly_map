@@ -1,0 +1,30 @@
+﻿@inject IJSRuntime js;
+
+<div>
+    <div id="mapcontainer" style="height: 75vh; width: 100%; margin:0;"></div>
+</div>
+
+@code{
+    public bool isInitilized = false;
+
+    public async Task InitAsync(List<Store> stores, Position position)
+    {
+        var mapModule = await js.InvokeAsync<IJSObjectReference>("import", "./js/leaflet-map.js");
+
+        if (!isInitilized)
+        {
+            await mapModule.InvokeVoidAsync("initMap");
+            isInitilized = true;
+        }
+
+        if (position != null)
+        {
+            await mapModule.InvokeVoidAsync("setPosition", position);
+        }
+        if (stores != null && stores.Any())
+        {
+            await mapModule.InvokeVoidAsync("setData", stores);
+        }
+    }
+
+}

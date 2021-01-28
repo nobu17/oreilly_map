@@ -1,0 +1,41 @@
+﻿@inherits LayoutComponentBase
+
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Elevation="1">
+        <MudButton Style="color:white;" Variant="Variant.Text" Link="/"><MudText Typo="Typo.subtitle1" Class="ml-2">オライリーマップ</MudText></MudButton>
+        @if (!string.IsNullOrWhiteSpace(message))
+        {
+            <MudText Typo="Typo.subtitle1">@message</MudText>
+        }
+        <MudAppBarSpacer />
+        <MudIconButton Icon="@Icons.Custom.MudBlazor" Color="Color.Inherit" OnClick="ClearCache" />
+        <MudIconButton Icon="@Icons.Custom.GitHub" Color="Color.Inherit" Link="https://github.com/Garderoben/MudBlazor" Target="_blank" />
+    </MudAppBar>
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    private readonly int ClickNumberOfReset = 10;
+    private int _clickCounter = 0;
+    private string message = string.Empty;
+
+    [Inject]
+    public Infrastructure.Blazor.Json.LocalDataManagementService LocalStore { get; set; }
+
+    async Task ClearCache()
+    {
+        _clickCounter++;
+        if (_clickCounter == ClickNumberOfReset)
+        {
+            await LocalStore.ClearAsync();
+            _clickCounter = 0;
+            message = "Reset is completed";
+        }
+    }
+}

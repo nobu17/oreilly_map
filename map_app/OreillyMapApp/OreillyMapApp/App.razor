@@ -1,0 +1,66 @@
+
+<Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+    </Found>
+    <NotFound>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <p>Sorry, there's nothing at this address.</p>
+        </LayoutView>
+    </NotFound>
+</Router>
+<MudThemeProvider Theme="MyCustomTheme" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+@code{
+    MudTheme MyCustomTheme = new MudTheme()
+    {
+        Palette = GetRandomPallete()
+    };
+
+    private static Palette GetRandomPallete()
+    {
+        var rnd = new Random();
+        var value = rnd.Next(0, 4);
+
+        switch (value)
+        {
+            case 0:
+                return new Palette()
+                {
+                    Primary = Colors.Teal.Accent4,
+                    Secondary = Colors.Green.Accent4,
+                    AppbarBackground = Colors.Teal.Accent4,
+                };
+            case 1:
+                return new Palette()
+                {
+                    Primary = Colors.Blue.Darken4,
+                    Secondary = Colors.Green.Accent4,
+                    AppbarBackground = Colors.Blue.Darken4,
+                };
+            case 2:
+                return new Palette()
+                {
+                    Primary = Colors.Blue.Darken3,
+                    Secondary = Colors.Green.Accent4,
+                    AppbarBackground = Colors.Blue.Darken3,
+                };
+            case 3:
+                return new Palette()
+                {
+                    Primary = Colors.Red.Darken3,
+                    Secondary = Colors.Green.Accent4,
+                    AppbarBackground = Colors.Red.Darken3,
+                };
+            default:
+                return new Palette()
+                {
+                    Primary = Colors.Pink.Darken3,
+                    Secondary = Colors.Green.Accent4,
+                    AppbarBackground = Colors.Pink.Darken3,
+                };
+        }
+    }
+}
