@@ -3,7 +3,7 @@
         <MudGrid Justify="Justify.Center">
             <MudItem>
                 <MudButton Variant="Variant.Filled"
-                           StartIcon="@Icons.Material.Explore"
+                           StartIcon="@Icons.Material.Outlined.Explore"
                            Color="Color.Primary" Size="Size.Large"
                            Disabled="@ButtonDisabled"
                            OnClick="async(e)=> { await OnNearestStoreSearchClicked.InvokeAsync(); }"
@@ -16,7 +16,7 @@
             <MudItem>
                 <MudButton Link="/map" Class="flex-grow-1"
                            Variant="Variant.Filled"
-                           StartIcon="@Icons.Material.LocationOn"
+                           StartIcon="@Icons.Material.Outlined.LocationOn"
                            Color="Color.Primary"
                            Size="Size.Large"
                            Style="width:23em;">地図で探す</MudButton>
@@ -48,7 +48,7 @@
             <MudItem>
                 <MudButton Class="my-8"
                            Variant="Variant.Filled"
-                           StartIcon="@Icons.Material.Search"
+                           StartIcon="@Icons.Material.Outlined.Search"
                            Color="Color.Primary"
                            Size="Size.Large"
                            OnClick="async(e) => { await OnPrefectureSearchClicked.InvokeAsync((Prefecture)SelectedPrefecture); }"

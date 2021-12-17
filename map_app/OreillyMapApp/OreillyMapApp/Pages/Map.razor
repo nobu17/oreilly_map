@@ -10,7 +10,7 @@
                 <MudItem>
                     <MudButton Link="/"
                                Variant="Variant.Filled"
-                               StartIcon="@Icons.Material.Wysiwyg"
+                               StartIcon="@Icons.Material.Outlined.Wysiwyg"
                                Color="Color.Primary" Size="Size.Large"
                                Style="width:23em;">条件で探す</MudButton>
                 </MudItem>
@@ -34,9 +34,9 @@
     {
         <StoreMap @ref="map"></StoreMap>
     }
-</MudContainer>
+    </MudContainer>
 
-@code {
+    @code {
 
     private StoreMap map;
     private bool isInitilized = false;
@@ -46,7 +46,7 @@
 
     public List<Store> Stores { get; set; } = new List<Store>();
 
-    public Position Position { get; set; }
+    public Domains.Models.Position Position { get; set; }
 
     public string ErrorMessage { get; set; }
 
@@ -114,9 +114,9 @@
 
         public double Longitude { get; set; }
 
-        public Position ToPosition()
+        public Domains.Models.Position ToPosition()
         {
-            return new Position(Latitude, Longitude);
+            return new Domains.Models.Position(Latitude, Longitude);
         }
     }
 }

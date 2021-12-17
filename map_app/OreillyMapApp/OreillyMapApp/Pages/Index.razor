@@ -21,10 +21,10 @@
     {
         <StoreList Stores="@Stores" CurrentPosition="@CurrentPosition"></StoreList>
     }
-</MudContainer>
+    </MudContainer>
 
 
-@code{
+    @code {
 
     public string Message
     {
@@ -47,7 +47,7 @@
 
     public List<Store> Stores { get; set; }
 
-    public Position CurrentPosition { get; set; }
+    public Domains.Models.Position CurrentPosition { get; set; }
 
     public async void OnSearchPrefecture(Prefecture prefecture)
     {
@@ -104,7 +104,7 @@
         ErrorMessage = string.Empty;
     }
 
-    private async Task<Position> GetPositionAsync()
+    private async Task<Domains.Models.Position> GetPositionAsync()
     {
         var geoModule = await js.InvokeAsync<IJSObjectReference>("import", "./js/geo.js");
         try
@@ -125,9 +125,9 @@
 
         public double Longitude { get; set; }
 
-        public Position ToPosition()
+        public Domains.Models.Position ToPosition()
         {
-            return new Position(Latitude, Longitude);
+            return new Domains.Models.Position(Latitude, Longitude);
         }
     }
 

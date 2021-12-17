@@ -12,11 +12,11 @@
                         <CardHeaderActions>
                             @if (!string.IsNullOrWhiteSpace(store.StoreUrl))
                             {
-                                <MudIconButton Icon="@Icons.Material.Home" Color="Color.Primary" Size="Size.Large" Link="@store.StoreUrl" Target="_blank" />
+                                <MudIconButton Icon="@Icons.Material.Outlined.Home" Color="Color.Primary" Size="Size.Large" Link="@store.StoreUrl" Target="_blank" />
                             }
                             @if (!string.IsNullOrWhiteSpace(store.MapUrl))
                             {
-                                <MudIconButton Icon="@Icons.Material.AddLocation" Color="Color.Primary" Size="Size.Large" Link="@store.MapUrl" Target="_blank" />
+                                <MudIconButton Icon="@Icons.Material.Outlined.AddLocation" Color="Color.Primary" Size="Size.Large" Link="@store.MapUrl" Target="_blank" />
                             }
                         </CardHeaderActions>
                     </MudCardHeader>
@@ -39,9 +39,9 @@
     public List<Store> Stores { get; set; } = new List<Store>();
 
     [Parameter]
-    public Position CurrentPosition { get; set; }
+    public Domains.Models.Position CurrentPosition { get; set; }
 
-    private static string GetDistanceString(Store store, Position position)
+    private static string GetDistanceString(Store store, Domains.Models.Position position)
     {
         var meter = store.GetDistance(position.Latitude, position.Longitude) / 1000;
         return Math.Round(meter, 3).ToString() + " km";

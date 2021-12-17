@@ -4,10 +4,10 @@
     <div id="mapcontainer" style="height: 75vh; width: 100%; margin:0;"></div>
 </div>
 
-@code{
+@code {
     public bool isInitilized = false;
 
-    public async Task InitAsync(List<Store> stores, Position position)
+    public async Task InitAsync(List<Store> stores, Domains.Models.Position position)
     {
         var mapModule = await js.InvokeAsync<IJSObjectReference>("import", "./js/leaflet-map.js");
 
