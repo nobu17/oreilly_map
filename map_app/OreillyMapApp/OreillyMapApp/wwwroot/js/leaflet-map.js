@@ -43,26 +43,13 @@ export function setData(storeList) {
     }
 
     storeList.forEach((store) => {
-        // addMaker(store);
-        layer = addMaker2(layer, store);
+        layer = addMaker(layer, store);
     });
     map.addLayer(layer);
 }
 
 function getMap() {
     return L.map("mapcontainer", { zoomControl: true, tap: false });
-}
-
-function addMaker(storeData) {
-    try {
-        let sucontents = `<a target="_blank" rel="noopener noreferrer" href="${storeData.storeUrl}"><h5>${storeData.storeName}</h5></a>`;
-        const popup1 = L.popup({ maxWidth: 250 }).setContent(sucontents);
-        L.marker([storeData.position.latitude, storeData.position.longitude], {
-            draggable: false,
-        }).bindPopup(popup1).bindTooltip(storeData.storeName).addTo(map);;
-    } catch (err) {
-        console.error("add error", err);
-    }
 }
 
 function addMaker2(layer, storeData) {
