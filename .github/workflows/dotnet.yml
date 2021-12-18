@@ -3,8 +3,12 @@ name: .NET Deploy to Github Pages
 on:
   push:
     branches: [ main ]
+    paths:
+    - 'map_app/OreillyMapApp/**'
   pull_request:
     branches: [ main ]
+    paths:
+    - 'map_app/OreillyMapApp/**'    
 
 jobs:
   build:
