@@ -20,6 +20,7 @@ async function getStoreListAsync() {
 }
 
 async function getStoreInfoByPageAsync(pageNo) {
+  console.log("getStoreInfoByPageAsync.",pageNo)
   const storeList = [];
   const res = await axios.get(urlbase + pageNo.toString());
   const dom = new JSDOM(res.data);
@@ -32,11 +33,11 @@ async function getStoreInfoByPageAsync(pageNo) {
   }
   const stores = dom.window.document.querySelectorAll('.storeBox');
   for (const store of stores) {
-    const name = store.querySelector('h3').textContent;
-    const post = store.querySelector('.post').textContent;
-    const address = store.querySelector('.address').textContent;
-    const tel = store.querySelector('.spTel').textContent;
-    let mapUrl = store.querySelector('.mapLink');
+    const name = store.querySelector('h3')?.textContent ?? "";
+    const post = store.querySelector('.post')?.textContent ?? "";
+    const address = store.querySelector('.address')?.textContent ?? "";
+    const tel = store.querySelector('.spTel')?.textContent ?? "";
+    let mapUrl = store.querySelector('.mapLink') ?? "";
     if (mapUrl) {
       mapUrl = mapUrl.getAttribute('href');
     } else {
