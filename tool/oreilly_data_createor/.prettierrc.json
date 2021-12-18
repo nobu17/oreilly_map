@@ -2,5 +2,6 @@
   "printWidth": 140,
   "bracketSpacing": true,
   "semi": true,
-  "singleQuote": true
+  "singleQuote": true,
+  "endOfLine": "cr"
 }
