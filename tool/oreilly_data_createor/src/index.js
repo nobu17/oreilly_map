@@ -66,7 +66,9 @@ async function isFilExists(filePath) {
   }
 }
 
-function getStringFromDate(dt) {
+function getStringFromDate(utc) {
+  const jst = utc.toLocaleString({ timeZone: 'Asia/Tokyo' });
+  const dt = new Date(jst);
   const y = dt.getFullYear();
   const m = ('00' + (dt.getMonth() + 1)).slice(-2);
   const d = ('00' + dt.getDate()).slice(-2);
