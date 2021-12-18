@@ -6,6 +6,7 @@
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-5">
     <MudText Align="Align.Center" Typo="Typo.h5">オライリー特約店を探そう！</MudText>
     <AnimalImage></AnimalImage>
+    <MudText Align="Align.Center" Typo="Typo.subtitle1">最終更新日:@LastUpdated</MudText>
     <SearchBox ButtonDisabled="@IsLoading" OnPrefectureSearchClicked="OnSearchPrefecture" OnNearestStoreSearchClicked="OnSearchNearest"></SearchBox>
     <MudText Color="Color.Error">@ErrorMessage</MudText>
     <MudText>@Message</MudText>
@@ -40,6 +41,8 @@
 
     public string ErrorMessage { get; set; }
 
+    public string LastUpdated { get; set; } = string.Empty;
+
     public bool IsLoading { get; set; } = false;
 
     [Inject]
@@ -48,6 +51,28 @@
     public List<Store> Stores { get; set; }
 
     public Domains.Models.Position CurrentPosition { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+
+        try
+        {
+            ErrorMessage = string.Empty;
+            IsLoading = true;
+            StateHasChanged();
+            LastUpdated = await AppService.GetLastUpdatedAsync();
+        }
+        catch (Exception e)
+        {
+            ErrorMessage = "データの取得に失敗しました" + e.ToString();
+        }
+        finally
+        {
+            IsLoading = false;
+            StateHasChanged();
+        }
+        await base.OnInitializedAsync();
+    }
 
     public async void OnSearchPrefecture(Prefecture prefecture)
     {

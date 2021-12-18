@@ -10,6 +10,7 @@ async function main() {
     storeList = await readStores();
   } catch (err) {
     console.error('read stores error', err);
+    process.exitCode = 1;
     return;
   }
 

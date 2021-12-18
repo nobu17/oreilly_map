@@ -12,7 +12,6 @@ namespace Infrastructure.Blazor.Json
 {
     public class JsonStoreRepository : IStoreRepository
     {
-        private const string StoreKey = "StoreList";
         // 24 hours retain
         private readonly TimeSpan ExpiredLimit = new TimeSpan(24, 0, 0);
 
@@ -37,7 +36,7 @@ namespace Infrastructure.Blazor.Json
             _jsonFileUrl = jsonFileUrl;
         }
 
-        public async Task<string> GetUpdatedDate()
+        public async Task<string> GetLastUpdatedAsync()
         {
             if (string.IsNullOrWhiteSpace(_updateDate))
             {

@@ -28,5 +28,10 @@ namespace Domains.Applications
         {
             return _storeRepository.GetNearestAsync(latitude, longtidue, maxCount);
         }
+
+        public Task<string> GetLastUpdatedAsync()
+        {
+            return _storeRepository.GetLastUpdatedAsync();
+        }
     }
 }

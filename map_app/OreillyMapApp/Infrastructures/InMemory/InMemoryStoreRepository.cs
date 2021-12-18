@@ -29,6 +29,12 @@ namespace Infrastructures.InMemory
             return _storeList.Where(s => s.IsSamePrefecure(prefecture));
         }
 
+        public async Task<string> GetLastUpdatedAsync()
+        {
+            await Task.Delay(1000);
+            return DateTime.Now.ToShortDateString();
+        }
+
         public async Task<IEnumerable<Store>> GetNearestAsync(double latitude, double longtitude, int maxCount)
         {
             return await Task.Factory.StartNew(() => _storeList.OrderBy(s => s.Position.GetDistance(latitude, longtitude)).Take(maxCount));
