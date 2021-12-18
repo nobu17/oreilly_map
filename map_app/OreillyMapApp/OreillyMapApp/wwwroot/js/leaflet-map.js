@@ -50,7 +50,7 @@ export function setData(storeList) {
 }
 
 function getMap() {
-    return L.map("mapcontainer", { zoomControl: true });
+    return L.map("mapcontainer", { zoomControl: true, tap: false });
 }
 
 function addMaker(storeData) {
