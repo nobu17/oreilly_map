@@ -36,4 +36,11 @@ jobs:
       working-directory: ./tool/oreilly_data_createor
     - run: npm run build
       working-directory: ./tool/oreilly_data_createor
-      
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+           github_token: ${{ secrets.GITHUB_TOKEN }}
+           publish_dir: tool/oreilly_data_createor/files
+           destination_dir: ./sample-data/
+           keep_files: true
+           
