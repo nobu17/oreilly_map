@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "node src/index.js"
+    "build": "node src/index.js",
+    "lint": "eslint --ext \".js,.vue\" --ignore-path .gitignore . --fix"
   },
   "keywords": [],
   "author": "",
