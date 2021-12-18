@@ -13,7 +13,11 @@ on:
     branches: [ main ]
     paths:
     - 'tool/**'
-    
+  workflow_run:
+    workflows: [".NET Deploy to Github Pages"]
+    types:
+    - completed
+ 
 jobs:
   build:
     runs-on: ubuntu-latest
