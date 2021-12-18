@@ -39,7 +39,7 @@ function getConcatStoreList(storeList) {
   console.log('failedStores:', storeList.failList);
   const stores = storeList.successList.concat(storeList.failList);
   return {
-    updateDate: getStringFromDate(new Date()),
+    updateDate: getNowDateString(),
     stores: stores,
   };
 }
@@ -66,9 +66,9 @@ async function isFilExists(filePath) {
   }
 }
 
-function getStringFromDate(utc) {
-  const jst = utc.toLocaleString({ timeZone: 'Asia/Tokyo' });
-  const dt = new Date(jst);
+function getNowDateString() {
+  // get jst
+  const dt = new Date(Date.now() + (new Date().getTimezoneOffset() + 9 * 60) * 60 * 1000);
   const y = dt.getFullYear();
   const m = ('00' + (dt.getMonth() + 1)).slice(-2);
   const d = ('00' + dt.getDate()).slice(-2);
