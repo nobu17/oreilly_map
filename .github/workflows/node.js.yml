@@ -5,6 +5,8 @@ name: Node.js CI
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron:  '30 17 * * *'
   push:
     branches: [ main ]
     paths:
@@ -13,7 +15,11 @@ on:
     branches: [ main ]
     paths:
     - 'tool/**'
-    
+  workflow_run:
+    workflows: [".NET Deploy to Github Pages"]
+    types:
+    - completed
+ 
 jobs:
   build:
     runs-on: ubuntu-latest
