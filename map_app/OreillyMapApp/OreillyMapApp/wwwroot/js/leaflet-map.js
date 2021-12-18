@@ -52,7 +52,7 @@ function getMap() {
     return L.map("mapcontainer", { zoomControl: true, tap: false });
 }
 
-function addMaker2(layer, storeData) {
+function addMaker(layer, storeData) {
     try {
         let sucontents = `<h4>${storeData.storeName}</h4><a target="_blank" rel="noopener noreferrer" href="${storeData.storeUrl}">Link</a>`;
         const popup1 = L.popup({ maxWidth: 250 }).setContent(sucontents);
