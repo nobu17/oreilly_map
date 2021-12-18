@@ -43,4 +43,5 @@ jobs:
            publish_dir: tool/oreilly_data_createor/files
            destination_dir: ./sample-data/
            force_orphan: true
+           keep_files: true
            
