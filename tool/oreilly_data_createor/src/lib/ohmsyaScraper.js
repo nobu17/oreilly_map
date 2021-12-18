@@ -14,21 +14,33 @@ async function getStoreListAsync() {
     stores = await getStoreInfoByPageAsync(currentPage);
     storeList = storeList.concat(stores);
     currentPage++;
-  } while (stores.length > 0 && currentPage < 20);
+  } while (stores.length > 0 && currentPage < 30);
 
   return storeList;
 }
 
+async function updateStoreListAsync(baseStoreList) {
+  const newStoreList = await getStoreListAsync();
+  // if basestore list has position info, merge info
+  for (const store of newStoreList) {
+    const matchedStore = baseStoreList.find((s) => s.name === store.name && s.address === store.address);
+    if (matchedStore && !(matchedStore.position === null || typeof matchedStore.position === 'undefined')) {
+      store.position = matchedStore.position;
+    }
+  }
+  return newStoreList;
+}
+
 async function getStoreInfoByPageAsync(pageNo) {
-  console.log('getStoreInfoByPageAsync.', pageNo);
+  console.log('Start scrape:', pageNo);
   const storeList = [];
   const res = await axios.get(urlbase + pageNo.toString());
   const dom = new JSDOM(res.data);
   const currentPage = dom.window.document.querySelector('.Current').textContent;
-  console.log('ScrapedPage:', currentPage);
+  console.log('ScrapedPage No:', currentPage);
   // if current page is not match it means that final page
   if (pageNo.toString() !== currentPage) {
-    console.log('no match!!!!');
+    console.log('no store info found');
     return storeList;
   }
   const stores = dom.window.document.querySelectorAll('.storeBox');
@@ -65,3 +77,4 @@ async function getStoreInfoByPageAsync(pageNo) {
 }
 
 exports.getStoreListAsync = getStoreListAsync;
+exports.updateStoreListAsync = updateStoreListAsync;

@@ -22,6 +22,8 @@ async function getPositionListAsync(storeInfoList) {
         //console.log(url);
         const pos = await getPositionAsync(url);
         store.position = pos;
+      } else {
+        console.log('it is already having a position:', counter);
       }
       storeList.push(store);
     } catch (err) {

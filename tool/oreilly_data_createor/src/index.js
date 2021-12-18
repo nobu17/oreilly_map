@@ -48,6 +48,8 @@ async function readStores() {
   const isFileExists = await isFilExists(filePath);
   if (isFileExists) {
     storeList = JSON.parse(await fs.readFile(filePath)).stores;
+    // merge info
+    storeList = await ohmsyaScraper.updateStoreListAsync(storeList);
   } else {
     storeList = await ohmsyaScraper.getStoreListAsync();
   }
