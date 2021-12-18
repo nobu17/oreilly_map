@@ -71,7 +71,7 @@ function addMaker2(layer, storeData) {
         const popup1 = L.popup({ maxWidth: 250 }).setContent(sucontents);
         const maker = L.marker([storeData.position.latitude, storeData.position.longitude], {
             draggable: false,
-        }).bindPopup(popup1).openPopup();
+        }).bindPopup(popup1);
         layer.addLayer(maker);
         return layer;
     } catch (err) {
