@@ -1,5 +1,5 @@
 # Oreilly map
-https://o-reillyjapanbooksearch.web.app
+https://nobu17.github.io/oreilly_map/
 
 ## About 
 The Blazor application for displaying Oreilly books available stores
