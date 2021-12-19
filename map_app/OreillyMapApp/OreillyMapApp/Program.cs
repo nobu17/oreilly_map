@@ -1,14 +1,9 @@
-using System;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using Domains.Applications;
 using Domains.Models;
+using Infrastructure.Blazor.Geo;
 using Infrastructure.Blazor.Json;
-using Infrastructures.InMemory;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using MudBlazor;
 using MudBlazor.Services;
 
 namespace OreillyMapApp
@@ -30,7 +25,9 @@ namespace OreillyMapApp
             builder.Services.AddScoped<LocalDataManagementService>();
             builder.Services.AddScoped<IStoreRepository, JsonStoreRepository>();
             //builder.Services.AddSingleton<IStoreRepository, InMemoryStoreRepository>();
+            builder.Services.AddScoped<IGeoRepository, JSGeoRepository>();
             builder.Services.AddScoped<StoreApplicationService>();
+            builder.Services.AddScoped<GeoApplicationService>();
 
             builder.Services.AddBlazoredLocalStorage();
 

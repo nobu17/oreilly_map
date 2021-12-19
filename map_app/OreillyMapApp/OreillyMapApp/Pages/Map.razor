@@ -33,7 +33,7 @@
     }
     else
     {
-        <StoreMap @ref="map" OnStoreMarkerSelected="@DisplayStoreDialog" MapHeight="80vh"></StoreMap>
+        <StoreMap @ref="map" OnStoreMarkerSelected="@DisplayStoreDialog" MapHeight="75vh"></StoreMap>
     }
     </MudContainer>
 
@@ -44,6 +44,9 @@
 
     [Inject]
     public StoreApplicationService AppService { get; set; }
+
+    [Inject]
+    public GeoApplicationService GeoService { get; set; }
 
     [Parameter]
     [SupplyParameterFromQuery(Name = "latitude")]
@@ -126,9 +129,7 @@
     {
         try
         {
-            var geoModule = await js.InvokeAsync<IJSObjectReference>("import", "./js/geo.js");
-            var pos = await geoModule.InvokeAsync<JsPosition>("getCurrentLocation");
-            Position = pos.ToPosition();
+            Position = await GeoService.GetCurrentPositionAsync();
         }
         catch (Exception)
         {
@@ -145,17 +146,5 @@
         parameters.Add("Store", store);
         var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
         DialogService.Show<StoreInfoDialog>("店舗情報", parameters, options);
-    }
-
-    public class JsPosition
-    {
-        public double Latitude { get; set; }
-
-        public double Longitude { get; set; }
-
-        public Domains.Models.Position ToPosition()
-        {
-            return new Domains.Models.Position(Latitude, Longitude);
-        }
     }
 }

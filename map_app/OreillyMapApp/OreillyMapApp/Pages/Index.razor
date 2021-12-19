@@ -6,9 +6,9 @@
 
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-5">
-    <MudText Align="Align.Center" Typo="Typo.h5">オライリー特約店を探そう！</MudText>
+    <MudText Align="Align.Center" Typo="Typo.h5">オライリー取り扱い書店を探そう！</MudText>
     <AnimalImage></AnimalImage>
-    <MudText Align="Align.Center" Typo="Typo.subtitle1">最終更新日:@LastUpdated</MudText>
+    <MudText Align="Align.Center" Typo="Typo.subtitle1">データ最終更新日:@LastUpdated</MudText>
     <SearchBox ButtonDisabled="@IsLoading" OnPrefectureSearchClicked="OnSearchPrefecture" OnNearestStoreSearchClicked="OnSearchNearest"></SearchBox>
     <MudText Color="Color.Error">@ErrorMessage</MudText>
     <MudText>@Message</MudText>
@@ -49,6 +49,9 @@
 
     [Inject]
     public StoreApplicationService AppService { get; set; }
+
+    [Inject]
+    public GeoApplicationService GeoService { get; set; }
 
     public List<Store> Stores { get; set; }
 
@@ -133,11 +136,9 @@
 
     private async Task<Domains.Models.Position> GetPositionAsync()
     {
-        var geoModule = await js.InvokeAsync<IJSObjectReference>("import", "./js/geo.js");
         try
         {
-            var pos = await geoModule.InvokeAsync<JsPosition>("getCurrentLocation");
-            return pos.ToPosition();
+            return await GeoService.GetCurrentPositionAsync();
         }
         catch (Exception e)
         {
@@ -155,17 +156,4 @@
         var options = new DialogOptions() { CloseButton = true, FullScreen = true };
         DialogService.Show<StoreMapDialog>("店舗地図", parameters, options);
     }
-
-    public class JsPosition
-    {
-        public double Latitude { get; set; }
-
-        public double Longitude { get; set; }
-
-        public Domains.Models.Position ToPosition()
-        {
-            return new Domains.Models.Position(Latitude, Longitude);
-        }
-    }
-
 }
