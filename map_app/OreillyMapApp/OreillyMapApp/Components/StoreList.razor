@@ -23,7 +23,7 @@
                     <MudCardContent>
                         @if (CurrentPosition != null)
                         {
-                            <p>@GetDistanceString(store, CurrentPosition)</p>
+                            <p>現在地から：@GetDistanceString(store, CurrentPosition)</p>
                         }
                         <MudText Typo="Typo.body1">@store.PostalCode @store.Address</MudText>
                         <MudText Typo="Typo.body2">@store.TelCode</MudText>
