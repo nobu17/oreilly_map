@@ -1,7 +1,7 @@
 ﻿@inject IJSRuntime js;
 
 <div>
-    <div id="mapcontainer" style="height: 75vh; width: 100%; margin:0;"></div>
+    <div id="mapcontainer" style="height: @MapHeight; width: 100%; margin:0;"></div>
 </div>
 
 @code {
@@ -12,6 +12,9 @@
 
     [Parameter]
     public int? MapZoomLevel { get; set; }
+
+    [Parameter]
+    public string MapHeight { get; set; } = "70vh";
 
     public async Task InitAsync(List<Store> stores, Domains.Models.Position position)
     {
