@@ -4,33 +4,10 @@
         @foreach (var store in Stores)
         {
             <MudItem xs="12" md="6">
-                <MudCard Outlined="true">
-                    <MudCardHeader>
-                        <CardHeaderContent>
-                            <MudButton Color="Color.Primary" OnClick="@(() =>ClickedStoreLink(store))">
-                                <MudText Typo="Typo.h5">@store.StoreName</MudText>
-                            </MudButton>
-                        </CardHeaderContent>
-                        <CardHeaderActions>
-                            @if (!string.IsNullOrWhiteSpace(store.StoreUrl))
-                            {
-                                <MudIconButton Icon="@Icons.Material.Outlined.Home" Color="Color.Primary" Size="Size.Large" Link="@store.StoreUrl" Target="_blank" />
-                            }
-                            @if (!string.IsNullOrWhiteSpace(store.MapUrl))
-                            {
-                                <MudIconButton Icon="@Icons.Material.Outlined.AddLocation" Color="Color.Primary" Size="Size.Large" Link="@store.MapUrl" Target="_blank" />
-                            }
-                        </CardHeaderActions>
-                    </MudCardHeader>
-                    <MudCardContent>
-                        @if (CurrentPosition != null)
-                        {
-                            <p>現在地から：@GetDistanceString(store, CurrentPosition)</p>
-                        }
-                        <MudText Typo="Typo.body1">@store.PostalCode @store.Address</MudText>
-                        <MudText Typo="Typo.body2">@store.TelCode</MudText>
-                    </MudCardContent>
-                </MudCard>
+                <StoreCard Store="@store"
+                   OnStoreNameButtonClicked="@OnStoreSelected"
+                   CurrentPosition="@CurrentPosition"
+                   StoreNameDisplayMode="@StoreCard.DisplayMode.Button"></StoreCard>
             </MudItem>
         }
     </MudGrid>

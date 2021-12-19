@@ -2,27 +2,7 @@
     <DialogContent>
         @if (Store != null)
         {
-            <MudCard Outlined="true">
-                <MudCardHeader>
-                    <CardHeaderContent>
-                        <MudText Typo="Typo.h6">@Store.StoreName</MudText>
-                    </CardHeaderContent>
-                </MudCardHeader>
-                <MudCardContent>
-                    <MudText Typo="Typo.body1">@Store.PostalCode @Store.Address</MudText>
-                    <MudText Typo="Typo.body2">@Store.TelCode</MudText>
-                </MudCardContent>
-                <MudCardActions>
-                    @if (!string.IsNullOrWhiteSpace(Store.StoreUrl))
-                    {
-                        <MudIconButton Icon="@Icons.Material.Outlined.Home" Color="Color.Primary" Size="Size.Large" Link="@Store.StoreUrl" Target="_blank" />
-                    }
-                    @if (!string.IsNullOrWhiteSpace(Store.MapUrl))
-                    {
-                        <MudIconButton Icon="@Icons.Material.Outlined.AddLocation" Color="Color.Primary" Size="Size.Large" Link="@Store.MapUrl" Target="_blank" />
-                    }
-                </MudCardActions>
-            </MudCard>
+            <StoreCard Store="@Store" IconMode="@StoreCard.IconPosition.Bottom"></StoreCard>
         }
     </DialogContent>
 </MudDialog>

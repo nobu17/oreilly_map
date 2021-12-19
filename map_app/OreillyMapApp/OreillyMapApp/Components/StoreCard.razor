@@ -1,0 +1,94 @@
+﻿@if (Store != null)
+{
+    <MudCard Outlined="true">
+        <MudCardHeader>
+            <CardHeaderContent>
+                @if (StoreNameDisplayMode == DisplayMode.Text)
+                {
+                    <MudText Typo="Typo.h6">@Store.StoreName</MudText>
+                }
+                @if (StoreNameDisplayMode == DisplayMode.Button)
+                {
+                    <MudButton Color="Color.Primary" OnClick="@(() =>ClickedStoreLink(Store))">
+                        <MudText Typo="Typo.h5">@Store.StoreName</MudText>
+                    </MudButton>
+                }
+            </CardHeaderContent>
+            <CardHeaderActions>
+                @if (IconMode == IconPosition.Header)
+                {
+                    @if (!string.IsNullOrWhiteSpace(Store.StoreUrl))
+                    {
+                        <MudIconButton Icon="@Icons.Material.Outlined.Home" Color="Color.Primary" Size="Size.Large" Link="@Store.StoreUrl" Target="_blank" />
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Store.MapUrl))
+                    {
+                        <MudIconButton Icon="@Icons.Material.Outlined.AddLocation" Color="Color.Primary" Size="Size.Large" Link="@Store.MapUrl" Target="_blank" />
+                    }
+                }
+            </CardHeaderActions>
+        </MudCardHeader>
+        <MudCardContent>
+            @if (CurrentPosition != null)
+            {
+                <p>現在地から：@GetDistanceString(Store, CurrentPosition)</p>
+            }
+            <MudText Typo="Typo.body1">@Store.PostalCode @Store.Address</MudText>
+            <MudText Typo="Typo.body2">@Store.TelCode</MudText>
+        </MudCardContent>
+        @if (IconMode == IconPosition.Bottom)
+        {
+            <MudCardActions>
+                @if (!string.IsNullOrWhiteSpace(Store.StoreUrl))
+                {
+                    <MudIconButton Icon="@Icons.Material.Outlined.Home" Color="Color.Primary" Size="Size.Large" Link="@Store.StoreUrl" Target="_blank" />
+                }
+                @if (!string.IsNullOrWhiteSpace(Store.MapUrl))
+                {
+                    <MudIconButton Icon="@Icons.Material.Outlined.AddLocation" Color="Color.Primary" Size="Size.Large" Link="@Store.MapUrl" Target="_blank" />
+                }
+            </MudCardActions>
+        }
+    </MudCard>
+}
+
+@code {
+    [Parameter]
+    public Store Store { get; set; }
+
+    [Parameter]
+    public Domains.Models.Position CurrentPosition { get; set; }
+
+    [Parameter]
+    public IconPosition IconMode { get; set; } = IconPosition.Header;
+
+    [Parameter]
+    public DisplayMode StoreNameDisplayMode { get; set; } = DisplayMode.Text;
+
+    [Parameter]
+    public EventCallback<Store> OnStoreNameButtonClicked { get; set; }
+
+    private async Task ClickedStoreLink(Store store)
+    {
+        await OnStoreNameButtonClicked.InvokeAsync(store);
+    }
+
+    private static string GetDistanceString(Store store, Domains.Models.Position position)
+    {
+        var meter = store.GetDistance(position.Latitude, position.Longitude) / 1000;
+        return Math.Round(meter, 3).ToString() + " km";
+    }
+
+    public enum IconPosition
+    {
+        Header,
+        Bottom,
+        None,
+    }
+
+    public enum DisplayMode
+    {
+        Button,
+        Text
+    }
+}
