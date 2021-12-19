@@ -1,5 +1,5 @@
 ﻿let map;
-export function initMap(initPoint) {
+export function initMap() {
     map = getMap();
     //座標の指定
     let mpoint = [35.6809591, 139.7673068];

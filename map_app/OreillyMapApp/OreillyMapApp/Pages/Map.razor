@@ -78,7 +78,7 @@
         await base.OnInitializedAsync();
     }
 
-    void LocationChanged(object sender, LocationChangedEventArgs e)
+    private void LocationChanged(object sender, LocationChangedEventArgs e)
     {
         isInitilized = false;
         string navigationMethod = e.IsNavigationIntercepted ? "HTML" : "code";
