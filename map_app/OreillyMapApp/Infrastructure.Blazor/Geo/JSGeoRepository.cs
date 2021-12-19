@@ -14,7 +14,7 @@ namespace Infrastructure.Blazor.Geo
 
         public async Task<Position> GetCurrentPositionAsync()
         {
-            var geoModule = await _js.InvokeAsync<IJSObjectReference>("import", "./js/geo.js");
+            var geoModule = await _js.InvokeAsync<IJSObjectReference>("import", "./_content/Infrastructure.Blazor/js/geo.js");
             var pos = await geoModule.InvokeAsync<JsPosition>("getCurrentLocation");
             return pos.ToPosition();
         }
