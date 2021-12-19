@@ -43,7 +43,8 @@ export function setData(storeList) {
     }
 
     storeList.forEach((store) => {
-        layer = addMaker(layer, store);
+        // layer = addMakerWithPopup(layer, store);
+        layer = addMakerWithClickEvent(layer, store);
     });
     map.addLayer(layer);
 }
@@ -52,7 +53,7 @@ function getMap() {
     return L.map("mapcontainer", { zoomControl: true, tap: false });
 }
 
-function addMaker(layer, storeData) {
+function addMakerWithPopup(layer, storeData) {
     try {
         let sucontents = `<h4>${storeData.storeName}</h4><a target="_blank" rel="noopener noreferrer" href="${storeData.storeUrl}">Link</a>`;
         const popup1 = L.popup({ maxWidth: 250 }).setContent(sucontents);
@@ -65,3 +66,20 @@ function addMaker(layer, storeData) {
         console.error("add error", err);
     }
 }
+
+function addMakerWithClickEvent(layer, storeData) {
+    try {
+        const maker = L.marker([storeData.position.latitude, storeData.position.longitude], {
+            draggable: false,
+        }).on('click', function (e) { onMarkerClicked(storeData); });
+        layer.addLayer(maker);
+        return layer;
+    } catch (err) {
+        console.error("add error", err);
+    }
+}
+
+function onMarkerClicked(store) {
+    DotNet.invokeMethodAsync('OreillyMapApp', 'OnStoreMarkerClicked', store);
+}
+

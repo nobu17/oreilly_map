@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.808.5
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OreillyMapApp", "OreillyMapApp\OreillyMapApp.csproj", "{16207953-DFA7-49E1-8126-1DD8E667D6C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OreillyMapApp", "OreillyMapApp\OreillyMapApp.csproj", "{16207953-DFA7-49E1-8126-1DD8E667D6C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructures", "Infrastructures\Infrastructures.csproj", "{0AF45A61-DFCC-4901-ACEA-AF1E9ADA183D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructures", "Infrastructures\Infrastructures.csproj", "{0AF45A61-DFCC-4901-ACEA-AF1E9ADA183D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domains", "Domains\Domains.csproj", "{A17230BB-D318-41A8-AC9D-DED13310E5D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domains", "Domains\Domains.csproj", "{A17230BB-D318-41A8-AC9D-DED13310E5D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Blazor", "Infrastructure.Blazor\Infrastructure.Blazor.csproj", "{FD28001A-8438-458E-9A0D-7DAD58A3C87A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.Blazor", "Infrastructure.Blazor\Infrastructure.Blazor.csproj", "{FD28001A-8438-458E-9A0D-7DAD58A3C87A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

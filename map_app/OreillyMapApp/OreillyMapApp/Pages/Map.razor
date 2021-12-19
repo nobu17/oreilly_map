@@ -42,7 +42,18 @@
     private bool isInitilized = false;
 
     [Inject]
+    public IDialogService DialogService { get; set; }
+
+    [Inject]
     public StoreApplicationService AppService { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "latitude")]
+    public double? Latitude { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "longitude")]
+    public double? Longitude { get; set; }
 
     public List<Store> Stores { get; set; } = new List<Store>();
 
@@ -56,13 +67,13 @@
     protected async override Task OnInitializedAsync()
     {
         NavigationManager.LocationChanged += LocationChanged;
-
+        StoreDisplayAction = DisplayStoreDialog;
         try
         {
             ErrorMessage = string.Empty;
             IsLoading = true;
             StateHasChanged();
-            await SetLocationAsync();
+            await InitPositionAsync();
             var stores = await AppService.GetAllAsync();
             Stores = stores.ToList();
         }
@@ -95,6 +106,25 @@
         await base.OnAfterRenderAsync(firstRender);
     }
 
+    private async Task InitPositionAsync()
+    {
+        // try to set from parameter
+        if (Latitude != null && Longitude != null)
+        {
+            try
+            {
+                var pos = new Domains.Models.Position((double)Latitude, (double)Longitude);
+                Position = pos;
+                return;
+            }
+            catch (Exception)
+            {
+            }
+        }
+        // if not have parameter set from current location
+        await SetLocationAsync();
+    }
+
     private async Task SetLocationAsync()
     {
         try
@@ -106,6 +136,30 @@
         catch (Exception)
         {
         }
+    }
+
+    private static Action<Store> StoreDisplayAction;
+
+    protected void DisplayStoreDialog(Store store)
+    {
+        if (store == null)
+        {
+            return;
+        }
+        var parameters = new DialogParameters();
+        parameters.Add("Store", store);
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+        DialogService.Show<StoreInfoDialog>("店舗情報", parameters, options);
+    }
+
+    [JSInvokable]
+    public static void OnStoreMarkerClicked(Store store)
+    {
+        Console.WriteLine($"OnStoreMarkerClicked called : {store}");
+        StoreDisplayAction.Invoke(store);
+        //var parameters = new DialogParameters();
+        //parameters.Add("Store", store);
+        //DialogService.Show<StoreInfoDialog>("Delete", parameters);
     }
 
     public class JsPosition

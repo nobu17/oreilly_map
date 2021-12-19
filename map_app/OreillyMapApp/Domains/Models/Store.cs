@@ -43,10 +43,16 @@ namespace Domains.Models
 
     public class Position
     {
+        public Position()
+        {
+            // for js inter serialazation
+        }
+
         public Position(double latidude, double longtitude)
         {
             Latitude = latidude;
             Longitude = longtitude;
+            Validate();
         }
 
         public double Latitude { get; private set; }
@@ -56,6 +62,18 @@ namespace Domains.Models
         public double GetDistance(double latitude, double longitude)
         {
             return new GeoCoordinate(Latitude, Longitude).GetDistanceTo(new GeoCoordinate(latitude, longitude));
+        }
+
+        public void Validate()
+        {
+            if (Math.Abs(Latitude) > 90)
+            {
+                throw new ArgumentOutOfRangeException("Latitude is out of range.");
+            }
+            if (Math.Abs(Longitude) > 180)
+            {
+                throw new ArgumentOutOfRangeException("Longitude is out of range.");
+            }
         }
     }
 }
