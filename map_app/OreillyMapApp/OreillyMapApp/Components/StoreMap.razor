@@ -7,19 +7,26 @@
 @code {
     public bool isInitilized = false;
 
+    [Parameter]
+    public EventCallback<Store> OnStoreMarkerSelected { get; set; }
+
+    [Parameter]
+    public int? MapZoomLevel { get; set; }
+
     public async Task InitAsync(List<Store> stores, Domains.Models.Position position)
     {
         var mapModule = await js.InvokeAsync<IJSObjectReference>("import", "./js/leaflet-map.js");
 
         if (!isInitilized)
         {
-            await mapModule.InvokeVoidAsync("initMap");
+            var objRef = DotNetObjectReference.Create(this);
+            await mapModule.InvokeVoidAsync("initMap", objRef, MapZoomLevel);
             isInitilized = true;
         }
 
         if (position != null)
         {
-            await mapModule.InvokeVoidAsync("setPosition", position);
+            await mapModule.InvokeVoidAsync("setPosition", position, MapZoomLevel);
         }
         if (stores != null && stores.Any())
         {
@@ -27,4 +34,9 @@
         }
     }
 
+    [JSInvokable]
+    public void OnStoreMarkerClicked(Store store)
+    {
+        OnStoreMarkerSelected.InvokeAsync(store);
+    }
 }

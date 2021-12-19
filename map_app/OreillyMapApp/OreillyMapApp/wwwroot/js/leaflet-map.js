@@ -1,36 +1,45 @@
 ﻿let map;
-export function initMap() {
+let dotnet;
+export function initMap(dotNetHelper, viewPoint) {
+    dotnet = dotNetHelper;
     map = getMap();
     //座標の指定
     let mpoint = [35.6809591, 139.7673068];
-    if (
-        navigator.userAgent.indexOf("iPhone") > 0 ||
-        navigator.userAgent.indexOf("iPod") > 0 ||
-        navigator.userAgent.indexOf("Android") > 0
-    ) {
-        map.setView(mpoint, 9);
-    } else {
-        map.setView(mpoint, 11);
-    }
+    setViewPointLevel(mpoint, viewPoint);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution:
             '© <a href="http://osm.org/copyright">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
     }).addTo(map);
 }
 
-export function setPosition(initPoint) {
+export function setPosition(initPoint, viewPoint) {
     if (initPoint) {
         const mpoint = [initPoint.latitude, initPoint.longitude];
-        if (
-            navigator.userAgent.indexOf("iPhone") > 0 ||
-            navigator.userAgent.indexOf("iPod") > 0 ||
-            navigator.userAgent.indexOf("Android") > 0
-        ) {
-            map.setView(mpoint, 9);
+        setViewPointLevel(mpoint, viewPoint);
+    }
+}
+
+function setViewPointLevel(startPos, viewPoint) {
+    let setPoint = 9;
+    if (
+        navigator.userAgent.indexOf("iPhone") > 0 ||
+        navigator.userAgent.indexOf("iPod") > 0 ||
+        navigator.userAgent.indexOf("Android") > 0
+    ) {
+        if (viewPoint) {
+            setPoint = viewPoint;
         } else {
-            map.setView(mpoint, 11);
+            setPoint = 9;
+        }
+    } else {
+        if (viewPoint) {
+            setPoint = viewPoint;
+        } else {
+            setPoint = 11;
         }
     }
+    console.log("set zoom level", setPoint);
+    map.setView(startPos, setPoint);
 }
 
 let layer;
@@ -80,6 +89,7 @@ function addMakerWithClickEvent(layer, storeData) {
 }
 
 function onMarkerClicked(store) {
-    DotNet.invokeMethodAsync('OreillyMapApp', 'OnStoreMarkerClicked', store);
+    dotnet.invokeMethodAsync('OnStoreMarkerClicked', store);
+    // DotNet.invokeMethodAsync('OreillyMapApp', 'OnStoreMarkerClicked', store);
 }
 

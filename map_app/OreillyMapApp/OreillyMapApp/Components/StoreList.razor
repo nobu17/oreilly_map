@@ -7,7 +7,9 @@
                 <MudCard Outlined="true">
                     <MudCardHeader>
                         <CardHeaderContent>
-                            <MudLink Typo="Typo.h6" Href="@GetMapLink(store)">@store.StoreName</MudLink>
+                            <MudButton Color="Color.Primary" OnClick="@(() =>ClickedStoreLink(store))">
+                                <MudText Typo="Typo.h5">@store.StoreName</MudText>
+                            </MudButton>
                         </CardHeaderContent>
                         <CardHeaderActions>
                             @if (!string.IsNullOrWhiteSpace(store.StoreUrl))
@@ -42,16 +44,16 @@
     public Domains.Models.Position CurrentPosition { get; set; }
 
     [Parameter]
-    public EventCallback<Domains.Models.Position> OnStorePositionSelected { get; set; }
+    public EventCallback<Store> OnStoreSelected { get; set; }
+
+    private async Task ClickedStoreLink(Store store)
+    {
+        await OnStoreSelected.InvokeAsync(store);
+    }
 
     private static string GetDistanceString(Store store, Domains.Models.Position position)
     {
         var meter = store.GetDistance(position.Latitude, position.Longitude) / 1000;
         return Math.Round(meter, 3).ToString() + " km";
-    }
-
-    private static string GetMapLink(Store store)
-    {
-        return $"map?latitude={store.Position.Latitude}&longitude={store.Position.Longitude}";
     }
 }

@@ -1,5 +1,6 @@
 ﻿@inject IJSRuntime js
 @inject NavigationManager NavigationManager
+@inject IDialogService DialogService
 
 @page "/"
 
@@ -21,7 +22,7 @@
     }
     else if (Stores != null)
     {
-        <StoreList Stores="@Stores" CurrentPosition="@CurrentPosition" OnStorePositionSelected="@OnStorePositionSelected"></StoreList>
+        <StoreList Stores="@Stores" CurrentPosition="@CurrentPosition" OnStoreSelected="@OnStoreSelected"></StoreList>
     }
     </MudContainer>
 
@@ -145,8 +146,14 @@
         }
     }
 
-    private void OnStorePositionSelected(Domains.Models.Position position)
+    private async void OnStoreSelected(Store store)
     {
+        var allStores = await AppService.GetAllAsync();
+        var parameters = new DialogParameters();
+        parameters.Add("AllStores", allStores);
+        parameters.Add("CurrentStore", store);
+        var options = new DialogOptions() { CloseButton = true, FullScreen = true };
+        DialogService.Show<StoreMapDialog>("店舗地図", parameters, options);
     }
 
     public class JsPosition
