@@ -1,56 +1,53 @@
-﻿@if (Store != null)
-{
-    <MudCard Outlined="true">
-        <MudCardHeader>
-            <CardHeaderContent>
-                @if (StoreNameDisplayMode == DisplayMode.Text)
-                {
-                    <MudText Typo="Typo.h6">@Store.StoreName</MudText>
-                }
-                @if (StoreNameDisplayMode == DisplayMode.Button)
-                {
-                    <MudButton Color="Color.Primary" OnClick="@(() =>ClickedStoreLink(Store))">
-                        <MudText Typo="Typo.h5">@Store.StoreName</MudText>
-                    </MudButton>
-                }
-            </CardHeaderContent>
-            <CardHeaderActions>
-                @if (IconMode == IconPosition.Header)
-                {
-                    @if (!string.IsNullOrWhiteSpace(Store.StoreUrl))
-                    {
-                        <MudIconButton Icon="@Icons.Material.Outlined.Home" Color="Color.Primary" Size="Size.Large" Link="@Store.StoreUrl" Target="_blank" />
-                    }
-                    @if (!string.IsNullOrWhiteSpace(Store.MapUrl))
-                    {
-                        <MudIconButton Icon="@Icons.Material.Outlined.AddLocation" Color="Color.Primary" Size="Size.Large" Link="@Store.MapUrl" Target="_blank" />
-                    }
-                }
-            </CardHeaderActions>
-        </MudCardHeader>
-        <MudCardContent>
-            @if (CurrentPosition != null)
+﻿<MudCard Outlined="true">
+    <MudCardHeader>
+        <CardHeaderContent>
+            @if (StoreNameDisplayMode == DisplayMode.Text)
             {
-                <p>現在地から：@GetDistanceString(Store, CurrentPosition)</p>
+                <MudText Typo="Typo.h6">@Store?.StoreName</MudText>
             }
-            <MudText Typo="Typo.body1">@Store.PostalCode @Store.Address</MudText>
-            <MudText Typo="Typo.body2">@Store.TelCode</MudText>
-        </MudCardContent>
-        @if (IconMode == IconPosition.Bottom)
-        {
-            <MudCardActions>
-                @if (!string.IsNullOrWhiteSpace(Store.StoreUrl))
+            @if (StoreNameDisplayMode == DisplayMode.Button)
+            {
+                <MudButton Color="Color.Primary" OnClick="@(() =>ClickedStoreLink(Store))">
+                    <MudText Typo="Typo.h5">@Store?.StoreName</MudText>
+                </MudButton>
+            }
+        </CardHeaderContent>
+        <CardHeaderActions>
+            @if (IconMode == IconPosition.Header)
+            {
+                @if (!string.IsNullOrWhiteSpace(Store?.StoreUrl))
                 {
                     <MudIconButton Icon="@Icons.Material.Outlined.Home" Color="Color.Primary" Size="Size.Large" Link="@Store.StoreUrl" Target="_blank" />
                 }
-                @if (!string.IsNullOrWhiteSpace(Store.MapUrl))
+                @if (!string.IsNullOrWhiteSpace(Store?.MapUrl))
                 {
                     <MudIconButton Icon="@Icons.Material.Outlined.AddLocation" Color="Color.Primary" Size="Size.Large" Link="@Store.MapUrl" Target="_blank" />
                 }
-            </MudCardActions>
+            }
+        </CardHeaderActions>
+    </MudCardHeader>
+    <MudCardContent>
+        @if (CurrentPosition != null && Store != null)
+        {
+            <p>現在地から：@GetDistanceString(Store, CurrentPosition)</p>
         }
-    </MudCard>
-}
+        <MudText Typo="Typo.body1">@Store?.PostalCode @Store?.Address</MudText>
+        <MudText Typo="Typo.body2">@Store?.TelCode</MudText>
+    </MudCardContent>
+    @if (IconMode == IconPosition.Bottom)
+    {
+        <MudCardActions>
+            @if (!string.IsNullOrWhiteSpace(Store?.StoreUrl))
+            {
+                <MudIconButton Icon="@Icons.Material.Outlined.Home" Color="Color.Primary" Size="Size.Large" Link="@Store.StoreUrl" Target="_blank" />
+            }
+            @if (!string.IsNullOrWhiteSpace(Store?.MapUrl))
+            {
+                <MudIconButton Icon="@Icons.Material.Outlined.AddLocation" Color="Color.Primary" Size="Size.Large" Link="@Store.MapUrl" Target="_blank" />
+            }
+        </MudCardActions>
+    }
+</MudCard>
 
 @code {
     [Parameter]

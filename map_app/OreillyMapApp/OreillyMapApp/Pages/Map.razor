@@ -33,7 +33,8 @@
     }
     else
     {
-        <StoreMap @ref="map" OnStoreMarkerSelected="@DisplayStoreDialog" MapHeight="75vh"></StoreMap>
+        <StoreMap @ref="map" OnStoreMarkerSelected="@DisplayStoreDialog"></StoreMap>
+        <StoreCard Store="@SelectedStore"></StoreCard>
     }
     </MudContainer>
 
@@ -57,6 +58,8 @@
     public double? Longitude { get; set; }
 
     public List<Store> Stores { get; set; } = new List<Store>();
+
+    public Store SelectedStore { get; set; }
 
     public Domains.Models.Position Position { get; set; }
 
@@ -138,13 +141,14 @@
 
     protected void DisplayStoreDialog(Store store)
     {
-        if (store == null)
-        {
-            return;
-        }
-        var parameters = new DialogParameters();
-        parameters.Add("Store", store);
-        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
-        DialogService.Show<StoreInfoDialog>("店舗情報", parameters, options);
+        SelectedStore = store;
+        //if (store == null)
+        //{
+        //    return;
+        //}
+        //var parameters = new DialogParameters();
+        //parameters.Add("Store", store);
+        //var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+        //DialogService.Show<StoreInfoDialog>("店舗情報", parameters, options);
     }
 }

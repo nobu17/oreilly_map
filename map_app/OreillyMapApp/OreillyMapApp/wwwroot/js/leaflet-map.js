@@ -90,6 +90,5 @@ function addMakerWithClickEvent(layer, storeData) {
 
 function onMarkerClicked(store) {
     dotnet.invokeMethodAsync('OnStoreMarkerClicked', store);
-    // DotNet.invokeMethodAsync('OreillyMapApp', 'OnStoreMarkerClicked', store);
 }
 
