@@ -6,7 +6,7 @@ name: Node.js CI
 on:
   workflow_dispatch:
   schedule:
-    - cron:  '30 17 * * *'
+    - cron:  '30 17 * * 1'
   push:
     branches: [ main ]
     paths:
